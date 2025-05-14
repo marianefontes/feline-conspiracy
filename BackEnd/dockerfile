@@ -15,10 +15,10 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY backend/package*.json ./
+COPY BackEnd/package*.json ./
 RUN npm install
 
-COPY backend/ ./
+COPY BackEnd/ ./
 
 # Copiar o build do frontend da etapa anterior
 COPY --from=builder /app/frontend/build ./client
