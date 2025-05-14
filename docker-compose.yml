@@ -1,0 +1,9 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: BackEnd/dockerfile
+    container_name: gatos-backend
+    ports:
+      - "4000:4000"
+
