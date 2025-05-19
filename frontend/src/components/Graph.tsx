@@ -20,7 +20,6 @@ const Graph: React.FC<GraphProps> = ({ data }) => {
   const [images, setImages] = useState<Record<string, HTMLImageElement>>({});
   const graphRef = useRef<any>(null);
 
-  // Carrega imagens dos gatos
   useEffect(() => {
     const imgMap: Record<string, HTMLImageElement> = {};
     data.nodes.forEach((node) => {
@@ -34,11 +33,10 @@ const Graph: React.FC<GraphProps> = ({ data }) => {
     });
   }, [data.nodes]);
 
-  // Zoom automático ao carregar links
   useEffect(() => {
     if (graphRef.current) {
       setTimeout(() => {
-        graphRef.current.zoomToFit(400); // 400ms de animação
+        graphRef.current.zoomToFit(400, 80); 
       }, 300);
     }
   }, [data.links]);

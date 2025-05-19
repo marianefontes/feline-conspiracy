@@ -73,16 +73,16 @@ function App() {
       }
 
       i++;
-    }, 250);
+    }, 700);
   };
 
   useEffect(() => {
     carregarGrafo();
   }, []);
 
-  const alternarModo = () => {
-    document.body.classList.toggle("dark");
-  };
+  // const alternarModo = () => {
+  //   document.body.classList.toggle("dark");
+  // };
 
   const formatarNome = (id: string) => {
     return id
@@ -106,7 +106,7 @@ function App() {
               carregarGrafo(escolhido);
             }}
           >
-            <option value="">Escolha um gato estratégico</option>
+            <option value="">Escolha um Gato</option>
             {gatosDisponiveis.map((id) => (
               <option key={id} value={id}>
                 {formatarNome(id)}
@@ -114,20 +114,20 @@ function App() {
             ))}
           </select>
 
-          <span className="dark-toggle" onClick={alternarModo}>
+          {/* <span className="dark-toggle" onClick={alternarModo}>
             Modo Dark
-          </span>
+          </span> */}
         </div>
 
         <div className="content">
-          <h1 className="main-title">Feline Conspiracy Network</h1>
+          <h1 className="main-title">Feline Conspiracy</h1>
           <p className="subtitle">
             O mundo será dos gatos. Estamos apenas conectando as peças.
           </p>
           <p className="lider">
             👁️‍🗨️ Líder da Conspiração: <strong>{nomeFormatado}</strong>
           </p>
-          <p className="cost">🔺 Custo total da rede secreta: {totalCost}</p>
+          <p className="cost">🔺 Custo Total da Rede Secreta: {totalCost}</p>
         </div>
       </div>
 
