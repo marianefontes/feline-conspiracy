@@ -97,6 +97,7 @@ function App() {
     <div className="container">
       <div className="left-panel">
         <div className="top-actions">
+        <div className="gato-label">Selecione um gato</div>
           <select
             className="gato-select"
             value={gatoInicial}

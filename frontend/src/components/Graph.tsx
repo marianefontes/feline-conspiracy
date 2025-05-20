@@ -18,35 +18,57 @@ interface GraphProps {
 
 const Graph: React.FC<GraphProps> = ({ data }) => {
   const [images, setImages] = useState<Record<string, HTMLImageElement>>({});
+  const [readyToZoom, setReadyToZoom] = useState(false);
   const graphRef = useRef<any>(null);
 
+  // useEffect(() => {
+  //   const imgMap: Record<string, HTMLImageElement> = {};
+  //   data.nodes.forEach((node) => {
+  //     if (node.img && !images[node.id]) {
+  //       const img = new Image();
+  //       img.src = node.img;
+  //       img.onload = () => {
+  //         setImages((prev) => ({ ...prev, [node.id]: img }));
+  //       };
+  //     }
+  //   });
+  // }, [data.nodes]);
+
   useEffect(() => {
-    const imgMap: Record<string, HTMLImageElement> = {};
-    data.nodes.forEach((node) => {
-      if (node.img && !images[node.id]) {
-        const img = new Image();
-        img.src = node.img;
-        img.onload = () => {
-          setImages((prev) => ({ ...prev, [node.id]: img }));
-        };
-      }
-    });
-  }, [data.nodes]);
+    const allImagesLoaded = data.nodes.every(
+      (node) => !node.img || images[node.id]
+    );
+    if (allImagesLoaded) {
+      setReadyToZoom(true);
+    }
+  }, [images, data.nodes]);
 
   useEffect(() => {
     if (graphRef.current) {
-      setTimeout(() => {
-        graphRef.current.zoomToFit(400, 80); 
-      }, 300);
+      graphRef.current.d3Force('charge').strength(-30); 
+      graphRef.current.d3Force("link")?.distance(60);   
+      graphRef.current.d3ReheatSimulation();
     }
-  }, [data.links]);
+  }, []);
+
+  // Zoom manual após renderização!!!
+  const handleEngineStop = () => {
+    if (readyToZoom && graphRef.current) {
+      graphRef.current.zoomToFit(500, 80); 
+      setTimeout(() => {
+        graphRef.current.zoom(0.30); 
+        graphRef.current.cameraPosition({ x: 100, y: 0, z: 1200 }); 
+      }, 600); 
+    }
+  };
 
   return (
     <ForceGraph2D
       ref={graphRef}
       graphData={data}
-      nodeLabel={(node: NodeType) => `Gato ${node.id}`}
+      nodeLabel={(node: NodeType) => `${node.id}`}
       linkLabel="weight"
+      onEngineStop={handleEngineStop}
       nodeCanvasObject={(node: NodeType, ctx, globalScale) => {
         const size = 100 / globalScale;
         const img = images[node.id];
